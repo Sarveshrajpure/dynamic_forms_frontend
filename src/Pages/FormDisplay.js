@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getFromConfig } from "../Actions/formActions";
 import {
@@ -18,8 +18,6 @@ const FormDisplay = () => {
     queryKey: ["configData"],
     queryFn: getFromConfig,
   });
-
-
 
   console.log(formConfig.data);
 
