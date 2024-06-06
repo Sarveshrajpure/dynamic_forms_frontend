@@ -6,7 +6,7 @@ import FormDisplay from "./Pages/FormDisplay";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App h-[100vh] ">
       <BrowserRouter>
         <Switch>
           <Route path="/" name="Form Display" render={(props) => <FormDisplay {...props} />} />

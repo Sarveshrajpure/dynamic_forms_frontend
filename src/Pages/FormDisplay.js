@@ -10,8 +10,9 @@ import {
   RadioList,
   TextInput,
   VideoInput,
-  BannerAlert,
 } from "oolib";
+
+import BarLoader from "react-spinners/BarLoader";
 
 const FormDisplay = () => {
   const formConfig = useQuery({
@@ -19,31 +20,21 @@ const FormDisplay = () => {
     queryFn: getFromConfig,
   });
 
+  console.log(formConfig.error);
+
   console.log(formConfig.data);
 
   const getComp = (item) => {
     let comp = item.comp;
     let props = item.props;
 
-    console.log(comp);
     switch (comp) {
       case "TextInput":
         return (
-          <TextInput
-            isRequired={item.isRequired}
-            {...props}
-            valuePath={item.valuePath}
-            onChange={function noRefCheck() {}}
-          />
+          <TextInput isRequired={item.isRequired} {...props} onChange={function noRefCheck() {}} />
         );
       case "DropdownSingle":
-        return (
-          <DropdownSingle isRequired={item.isRequired} {...props} valuePath={item.valuePath}>
-            {props.options.map((option) => (
-              <option value={option.value} label={option.label} key={option.reactKey} />
-            ))}
-          </DropdownSingle>
-        );
+        return <DropdownSingle isRequired={item.isRequired} {...props}></DropdownSingle>;
       case "CheckboxList":
         return (
           <CheckboxList
@@ -51,18 +42,11 @@ const FormDisplay = () => {
             {...props}
             onChange={function noRefCheck() {}}
             options={props.options}
-            valuePath={item.valuePath}
           />
         );
       case "RadioList":
         return (
-          <RadioList
-            isRequired={item.isRequired}
-            {...props}
-            onChange={function noRefCheck() {}}
-            options={props.options}
-            valuePath={item.valuePath}
-          />
+          <RadioList isRequired={item.isRequired} {...props} onChange={function noRefCheck() {}} />
         );
       case "DatePicker":
         return (
@@ -90,25 +74,33 @@ const FormDisplay = () => {
     }
   };
   return (
-    <div className="flex justify-center">
-      <BannerAlert
-        BANNER_STATE={{
-          alertState: [],
-        }}
-        REMOVE_ALERT_BANNER={function noRefCheck() {}}
-      />
-      {formConfig.isLoading ? (
-        "Loading"
-      ) : (
-        <div className="flex flex-col w-[50%]">
-          {" "}
-          {formConfig.data.map((item) => (
-            <div className="my-8" key={item.props.id}>
-              {getComp(item)}
-            </div>
-          ))}
-        </div>
-      )}
+    <div>
+      <div className="heading text-center text-2xl text-[#33A4FF] font-semibold p-2">
+        Dynamic Forms
+      </div>
+      <div className="flex justify-center h-full ">
+        {formConfig.isLoading ? (
+          <div className="flex justify-center items-center h-full">
+            <BarLoader color="#36d7b7" />
+          </div>
+        ) : (
+          <div className="flex flex-col w-[50%]">
+            {formConfig.error ? (
+              <div className=" text-red-500 font-semibold flex justify-center items-center h-full">
+                Error - {formConfig.error.message}!
+              </div>
+            ) : (
+              <>
+                {formConfig.data?.map((item) => (
+                  <div className="my-8 pb-5" key={item.props.id}>
+                    {getComp(item)}
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
