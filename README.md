@@ -7,4 +7,4 @@
 
 ### 2.) Run command npm install.
 
-### 3.) Run command npm run server.
+### 3.) Run command npm start.
